@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BillMaster PaaS - Super Admin Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Super Admin Login -->
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="admin-logo">👑</div>
+                    <h1>BillMaster PaaS</h1>
+                    <p>Super Admin Platform</p>
+                </div>
+                
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label class="form-label">Administrator Email</label>
+                        <input type="email" class="form-control" id="adminEmail" placeholder="admin@billmaster.com" value="admin@billmaster.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="adminPassword" placeholder="Enter admin password" value="superadmin123" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Two-Factor Authentication</label>
+                        <input type="text" class="form-control" id="twoFactorCode" placeholder="Enter 6-digit code" value="123456">
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--full-width">Secure Login</button>
+                </form>
+
+                <div class="demo-info">
+                    <p><strong>Demo Credentials:</strong></p>
+                    <p>Email: admin@billmaster.com</p>
+                    <p>Password: superadmin123</p>
+                    <p>2FA Code: 123456</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Super Admin Dashboard -->
+    <div id="superAdminDashboard" class="page">
+        <div class="dashboard-layout">
+            <!-- Enhanced Sidebar -->
+            <nav class="sidebar">
+                <div class="sidebar-header">
+                    <div class="admin-brand">
+                        <div class="brand-icon">👑</div>
+                        <div>
+                            <h2>BillMaster PaaS</h2>
+                            <span class="brand-subtitle">Admin Control Center</span>
+                        </div>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-avatar">SA</div>
+                        <div>
+                            <span class="user-name">Super Admin</span>
+                            <span class="user-role">Platform Administrator</span>
+                        </div>
+                        <button id="logoutBtn" class="logout-btn">
+                            <span>🚪</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <ul class="nav-menu">
+                    <li class="nav-section">
+                        <span class="nav-section-title">OVERVIEW</span>
+                        <button class="nav-btn active" data-section="dashboard">
+                            <span class="nav-icon">📊</span>
+                            <span class="nav-text">Dashboard</span>
+                        </button>
+                        <button class="nav-btn" data-section="analytics">
+                            <span class="nav-icon">📈</span>
+                            <span class="nav-text">Analytics</span>
+                        </button>
+                    </li>
+                    <li class="nav-section">
+                        <span class="nav-section-title">VENDOR MANAGEMENT</span>
+                        <button class="nav-btn" data-section="vendorApplications">
+                            <span class="nav-icon">📋</span>
+                            <span class="nav-text">Applications</span>
+                            <span class="nav-badge">12</span>
+                        </button>
+                        <button class="nav-btn" data-section="vendorOnboarding">
+                            <span class="nav-icon">➕</span>
+                            <span class="nav-text">Add Vendor</span>
+                        </button>
+                        <button class="nav-btn" data-section="activeVendors">
+                            <span class="nav-icon">🏪</span>
+                            <span class="nav-text">Active Vendors</span>
+                        </button>
+                        <button class="nav-btn" data-section="paymentManagement">
+                            <span class="nav-icon">💳</span>
+                            <span class="nav-text">Payments</span>
+                        </button>
+                    </li>
+                    <li class="nav-section">
+                        <span class="nav-section-title">PLATFORM SETTINGS</span>
+                        <button class="nav-btn" data-section="moderatorRoles">
+                            <span class="nav-icon">👥</span>
+                            <span class="nav-text">Moderators</span>
+                        </button>
+                        <button class="nav-btn" data-section="subscriptionPlans">
+                            <span class="nav-icon">📋</span>
+                            <span class="nav-text">Subscription Plans</span>
+                        </button>
+                        <button class="nav-btn" data-section="systemSettings">
+                            <span class="nav-icon">⚙️</span>
+                            <span class="nav-text">Settings</span>
+                        </button>
+                        <button class="nav-btn" data-section="auditTrail">
+                            <span class="nav-icon">📋</span>
+                            <span class="nav-text">Audit Trail</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Dashboard Section -->
+                <section id="dashboardSection" class="content-section active">
+                    <div class="section-header">
+                        <div>
+                            <h1>Platform Overview</h1>
+                            <p class="section-subtitle">Real-time insights into your billing platform</p>
+                        </div>
+                        <div class="header-actions">
+                            <select id="dashboardTimeframe" class="form-control">
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month" selected>This Month</option>
+                                <option value="quarter">This Quarter</option>
+                            </select>
+                            <button class="btn btn--outline" onclick="exportDashboardReport()">📊 Export Report</button>
+                            <button class="btn btn--primary" onclick="refreshDashboard()">🔄 Refresh</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Key Metrics -->
+                    <div class="dashboard-metrics">
+                        <div class="metric-card primary">
+                            <div class="metric-icon">🏪</div>
+                            <div class="metric-content">
+                                <h3 id="totalVendors">342</h3>
+                                <p>Total Vendors</p>
+                                <div class="metric-trend">
+                                    <span class="trend-positive">↗ +12 this month</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card success">
+                            <div class="metric-icon">✅</div>
+                            <div class="metric-content">
+                                <h3 id="activeVendors">318</h3>
+                                <p>Active Vendors</p>
+                                <div class="metric-trend">
+                                    <span class="trend-positive">93% retention rate</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card warning">
+                            <div class="metric-icon">⏳</div>
+                            <div class="metric-content">
+                                <h3 id="pendingApplications">12</h3>
+                                <p>Pending Applications</p>
+                                <div class="metric-trend">
+                                    <span class="trend-neutral">Awaiting review</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card info">
+                            <div class="metric-icon">💰</div>
+                            <div class="metric-content">
+                                <h3 id="totalRevenue">₹24,50,000</h3>
+                                <p>Total Revenue</p>
+                                <div class="metric-trend">
+                                    <span class="trend-positive">↗ +23.5% growth</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card secondary">
+                            <div class="metric-icon">📊</div>
+                            <div class="metric-content">
+                                <h3 id="monthlyRecurringRevenue">₹1,85,000</h3>
+                                <p>Monthly Recurring Revenue</p>
+                                <div class="metric-trend">
+                                    <span class="trend-positive">↗ Stable growth</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card error">
+                            <div class="metric-icon">⚠️</div>
+                            <div class="metric-content">
+                                <h3 id="overdueAccounts">15</h3>
+                                <p>Overdue Payments</p>
+                                <div class="metric-trend">
+                                    <span class="trend-negative">Needs attention</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Charts -->
+                    <div class="dashboard-charts">
+                        <div class="chart-container large">
+                            <div class="chart-header">
+                                <h3>Revenue Analytics</h3>
+                                <div class="chart-controls">
+                                    <button class="chart-toggle active" data-chart="revenue">Revenue</button>
+                                    <button class="chart-toggle" data-chart="vendors">Vendors</button>
+                                </div>
+                            </div>
+                            <div class="chart-wrapper" style="position: relative; height: 350px;">
+                                <canvas id="revenueChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Plan Distribution</h3>
+                            </div>
+                            <div class="chart-wrapper" style="position: relative; height: 300px;">
+                                <canvas id="planDistributionChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Payment Methods</h3>
+                            </div>
+                            <div class="chart-wrapper" style="position: relative; height: 300px;">
+                                <canvas id="paymentMethodsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="activity-section">
+                        <h3>Recent Platform Activity</h3>
+                        <div class="activity-feed" id="activityFeed">
+                            <!-- Activities will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Vendor Applications Section -->
+                <section id="vendorApplicationsSection" class="content-section">
+                    <div class="section-header">
+                        <div>
+                            <h1>Vendor Applications</h1>
+                            <p class="section-subtitle">Review and process new vendor applications</p>
+                        </div>
+                        <div class="header-actions">
+                            <select id="applicationStatusFilter" class="form-control">
+                                <option value="">All Applications</option>
+                                <option value="pending">Pending Review</option>
+                                <option value="under_review">Under Review</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                            <button class="btn btn--secondary" onclick="bulkApproveApplications()">✅ Bulk Approve</button>
+                            <button class="btn btn--outline" onclick="exportApplications()">📊 Export</button>
+                        </div>
+                    </div>
+
+                    <div class="applications-grid" id="applicationsGrid">
+                        <!-- Applications will be populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Vendor Onboarding Section -->
+                <section id="vendorOnboardingSection" class="content-section">
+                    <div class="section-header">
+                        <div>
+                            <h1>Add New Vendor</h1>
+                            <p class="section-subtitle">Manually onboard a new vendor to the platform</p>
+                        </div>
+                    </div>
+
+                    <div class="onboarding-container">
+                        <form id="vendorOnboardingForm" class="onboarding-form">
+                            <!-- Business Information -->
+                            <div class="form-section">
+                                <div class="section-title">
+                                    <h3>Business Information</h3>
+                                    <span class="section-step">Step 1 of 3</span>
+                                </div>
+                                
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Business Name *</label>
+                                        <input type="text" class="form-control" name="businessName" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Business Type *</label>
+                                        <select class="form-control" name="businessType" required>
+                                            <option value="">Select Business Type</option>
+                                            <option value="E-commerce Platform">E-commerce Platform</option>
+                                            <option value="Restaurant Chain">Restaurant Chain</option>
+                                            <option value="Retail Store">Retail Store</option>
+                                            <option value="Healthcare">Healthcare</option>
+                                            <option value="Education">Education</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Owner Name *</label>
+                                        <input type="text" class="form-control" name="ownerName" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Email Address *</label>
+                                        <input type="email" class="form-control" name="email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Phone Number *</label>
+                                        <input type="tel" class="form-control" name="phone" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">GST Number *</label>
+                                        <input type="text" class="form-control" name="gstNumber" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Business Address *</label>
+                                    <textarea class="form-control" name="address" rows="3" required></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Subscription Details -->
+                            <div class="form-section">
+                                <div class="section-title">
+                                    <h3>Subscription & Billing</h3>
+                                    <span class="section-step">Step 2 of 3</span>
+                                </div>
+                                
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Subscription Plan *</label>
+                                        <select class="form-control" name="requestedPlan" required>
+                                            <option value="">Select Plan</option>
+                                            <option value="basic">Basic - ₹2,999/month</option>
+                                            <option value="standard">Standard - ₹7,999/month</option>
+                                            <option value="premium">Premium - ₹14,999/month</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Start Date *</label>
+                                        <input type="date" class="form-control" name="subscriptionStart" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Projected Monthly Revenue</label>
+                                        <input type="number" class="form-control" name="projectedMonthlyRevenue" placeholder="₹">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Payment Status</label>
+                                        <select class="form-control" name="paymentStatus">
+                                            <option value="paid">Paid</option>
+                                            <option value="pending">Pending</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Additional Information -->
+                            <div class="form-section">
+                                <div class="section-title">
+                                    <h3>Additional Information</h3>
+                                    <span class="section-step">Step 3 of 3</span>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Internal Notes</label>
+                                    <textarea class="form-control" name="notes" rows="3" placeholder="Add any internal notes about this vendor..."></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Risk Assessment</label>
+                                    <select class="form-control" name="riskScore">
+                                        <option value="Low">Low Risk</option>
+                                        <option value="Medium">Medium Risk</option>
+                                        <option value="High">High Risk</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" class="btn btn--outline" onclick="resetOnboardingForm()">Clear Form</button>
+                                <button type="submit" class="btn btn--primary">Create Vendor Account</button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Active Vendors Section -->
+                <section id="activeVendorsSection" class="content-section">
+                    <div class="section-header">
+                        <div>
+                            <h1>Active Vendors</h1>
+                            <p class="section-subtitle">Manage your active vendor accounts</p>
+                        </div>
+                        <div class="header-actions">
+                            <input type="text" id="vendorSearch" class="form-control search-input" placeholder="Search vendors...">
+                            <select id="vendorStatusFilter" class="form-control">
+                                <option value="">All Vendors</option>
+                                <option value="active">Active</option>
+                                <option value="suspended">Suspended</option>
+                                <option value="overdue">Payment Overdue</option>
+                            </select>
+                            <button class="btn btn--outline" onclick="exportVendors()">📊 Export</button>
+                        </div>
+                    </div>
+
+                    <div class="vendors-table-container">
+                        <table class="vendors-table" id="vendorsTable">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="selectAllVendors"></th>
+                                    <th>Vendor Details</th>
+                                    <th>Plan & Subscription</th>
+                                    <th>Payment Status</th>
+                                    <th>Performance</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vendorsTableBody">
+                                <!-- Vendor rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Payment Management Section -->
+                <section id="paymentManagementSection" class="content-section">
+                    <div class="section-header">
+                        <div>
+                            <h1>Payment Management</h1>
+                            <p class="section-subtitle">Monitor and manage vendor payments</p>
+                        </div>
+                        <div class="header-actions">
+                            <select class="form-control">
+                                <option value="all">All Payments</option>
+                                <option value="overdue">Overdue</option>
+                                <option value="due_soon">Due Soon</option>
+                                <option value="paid">Paid</option>
+                            </select>
+                            <button class="btn btn--secondary" onclick="sendPaymentReminders()">📧 Send Reminders</button>
+                            <button class="btn btn--outline" onclick="exportPayments()">📊 Export</button>
+                        </div>
+                    </div>
+
+                    <div class="payment-summary">
+                        <div class="summary-card">
+                            <h4>Total Outstanding</h4>
+                            <div class="summary-amount error">₹1,25,000</div>
+                        </div>
+                        <div class="summary-card">
+                            <h4>This Month's Revenue</h4>
+                            <div class="summary-amount success">₹18,50,000</div>
+                        </div>
+                        <div class="summary-card">
+                            <h4>Average Revenue Per User</h4>
+                            <div class="summary-amount">₹7,500</div>
+                        </div>
+                        <div class="summary-card">
+                            <h4>Payment Success Rate</h4>
+                            <div class="summary-amount success">98.7%</div>
+                        </div>
+                    </div>
+
+                    <div id="paymentsList" class="payments-list">
+                        <!-- Payment items will be populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Moderator Roles Section -->
+                <section id="moderatorRolesSection" class="content-section">
+                    <div class="section-header">
+                        <div>
+                            <h1>Moderator Management</h1>
+                            <p class="section-subtitle">Manage moderator roles and permissions</p>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn btn--primary" onclick="addModerator()">➕ Add Moderator</button>
+                        </div>
+                    </div>
+
+                    <div class="moderators-grid" id="moderatorsGrid">
+                        <!-- Moderators will be populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Subscription Plans Section -->
+                <section id="subscriptionPlansSection" class="content-section">
+                    <div class="section-header">
+                        <div>
+                            <h1>Subscription Plans</h1>
+                            <p class="section-subtitle">Configure and manage subscription plans</p>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn btn--primary" onclick="createPlan()">➕ Create Plan</button>
+                        </div>
+                    </div>
+
+                    <div class="plans-container" id="plansContainer">
+                        <!-- Subscription plans will be populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Analytics Section -->
+                <section id="analyticsSection" class="content-section">
+                    <div class="section-header">
+                        <div>
+                            <h1>Advanced Analytics</h1>
+                            <p class="section-subtitle">Detailed insights and reporting</p>
+                        </div>
+                        <div class="header-actions">
+                            <select class="form-control">
+                                <option value="week">This Week</option>
+                                <option value="month" selected>This Month</option>
+                                <option value="quarter">This Quarter</option>
+                                <option value="year">This Year</option>
+                            </select>
+                            <button class="btn btn--outline" onclick="generateAnalyticsReport()">📊 Generate Report</button>
+                        </div>
+                    </div>
+
+                    <div class="analytics-dashboard">
+                        <div class="analytics-charts">
+                            <div class="chart-container">
+                                <h3>Monthly Revenue Trend</h3>
+                                <div class="chart-wrapper" style="position: relative; height: 300px;">
+                                    <canvas id="monthlyRevenueChart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div class="chart-container">
+                                <h3>Vendor Growth</h3>
+                                <div class="chart-wrapper" style="position: relative; height: 300px;">
+                                    <canvas id="vendorGrowthChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- System Settings Section -->
+                <section id="systemSettingsSection" class="content-section">
+                    <div class="section-header">
+                        <div>
+                            <h1>System Settings</h1>
+                            <p class="section-subtitle">Configure platform settings and integrations</p>
+                        </div>
+                    </div>
+
+                    <div class="settings-container">
+                        <div class="settings-group">
+                            <h3>Platform Configuration</h3>
+                            <div class="setting-item">
+                                <label>Platform Name</label>
+                                <input type="text" class="form-control" value="BillMaster PaaS">
+                            </div>
+                            <div class="setting-item">
+                                <label>Support Email</label>
+                                <input type="email" class="form-control" value="support@billmaster.com">
+                            </div>
+                            <div class="setting-item">
+                                <label>Default Currency</label>
+                                <select class="form-control">
+                                    <option value="INR" selected>INR (₹)</option>
+                                    <option value="USD">USD ($)</option>
+                                    <option value="EUR">EUR (€)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <h3>Security Settings</h3>
+                            <div class="setting-item">
+                                <label>
+                                    <input type="checkbox" checked> Require Two-Factor Authentication
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <label>
+                                    <input type="checkbox" checked> Enable Session Timeout
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <label>Session Timeout (minutes)</label>
+                                <input type="number" class="form-control" value="30">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Audit Trail Section -->
+                <section id="auditTrailSection" class="content-section">
+                    <div class="section-header">
+                        <div>
+                            <h1>Audit Trail</h1>
+                            <p class="section-subtitle">Track all administrative actions</p>
+                        </div>
+                        <div class="header-actions">
+                            <input type="date" class="form-control" id="auditStartDate">
+                            <input type="date" class="form-control" id="auditEndDate">
+                            <select class="form-control">
+                                <option value="">All Actions</option>
+                                <option value="login">Login/Logout</option>
+                                <option value="vendor">Vendor Management</option>
+                                <option value="payment">Payment Actions</option>
+                                <option value="settings">Settings Changes</option>
+                            </select>
+                            <button class="btn btn--outline" onclick="exportAuditLog()">📊 Export</button>
+                        </div>
+                    </div>
+
+                    <div id="auditTrail" class="audit-trail">
+                        <!-- Audit entries will be populated by JavaScript -->
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    
+    <!-- Vendor Application Detail Modal -->
+    <div id="applicationModal" class="modal hidden">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>Vendor Application Review</h3>
+                <button class="close-btn" onclick="closeModal('applicationModal')">&times;</button>
+            </div>
+            <div class="modal-body" id="applicationModalBody">
+                <!-- Content populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Vendor Edit Modal -->
+    <div id="vendorEditModal" class="modal hidden">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>Edit Vendor</h3>
+                <button class="close-btn" onclick="closeModal('vendorEditModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="vendorEditForm">
+                    <!-- Form content populated by JavaScript -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Moderator Modal -->
+    <div id="moderatorModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Moderator</h3>
+                <button class="close-btn" onclick="closeModal('moderatorModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="moderatorForm">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Role</label>
+                        <select class="form-control" name="role" required>
+                            <option value="">Select Role</option>
+                            <option value="operations">Operations Manager</option>
+                            <option value="support">Support Lead</option>
+                            <option value="finance">Finance Manager</option>
+                            <option value="technical">Technical Administrator</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Permissions</label>
+                        <div class="permissions-grid">
+                            <label><input type="checkbox" name="permissions" value="vendor_management"> Vendor Management</label>
+                            <label><input type="checkbox" name="permissions" value="payment_processing"> Payment Processing</label>
+                            <label><input type="checkbox" name="permissions" value="analytics_full"> Full Analytics</label>
+                            <label><input type="checkbox" name="permissions" value="settings_read"> Settings (Read Only)</label>
+                            <label><input type="checkbox" name="permissions" value="escalation_handling"> Escalation Handling</label>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn--outline" onclick="closeModal('moderatorModal')">Cancel</button>
+                        <button type="submit" class="btn btn--primary">Add Moderator</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
